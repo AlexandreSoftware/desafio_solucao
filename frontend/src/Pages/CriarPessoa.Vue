@@ -11,7 +11,7 @@ export default {
         const confirmarInsercao = () => {
             console.log("passed")
             confirm.require({
-                message: 'Voce tem certeza que quer inserir essa cidade nas cidades?',
+                message: 'Voce tem certeza que quer inserir essa Pessoa?',
                 header: 'Confirmation',
                 icon: 'pi pi-exclamation-triangle',
                 accept: () => {
@@ -44,7 +44,7 @@ export default {
                 <InputMask mask="999.999.999.99" v-model="CpfPessoa"  />
                 <label for="username">Cpf da Pessoa</label>
             </span>
-            
+            <CascadeSelect placeholder="Carregando..." loading class="my-1"></CascadeSelect>    
             <div class="BotoesSubmit">
                 <Button  @click="confirmarInsercao()" label="Criar" icon="pi pi-check" class="p-button m-1"  />
                 <Button label="Limpar" icon="pi pi-times" class="p-button-sm m-1 p-button-danger" />
@@ -64,7 +64,7 @@ export default {
     }
     .FormCidade{
         background-color: #121212;
-        height: 40vh;
+        
         padding-left: 5vh;
         padding-top: 5vh;
         padding-right: 10vh;

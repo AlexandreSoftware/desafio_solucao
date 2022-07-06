@@ -87,6 +87,7 @@ import ToggleButton from "primevue/togglebutton";
 import Tree from "primevue/tree";
 import TreeSelect from "primevue/treeselect";
 import TreeTable from "primevue/treetable";
+import CascadeSelect from "primevue/cascadeselect";
 import TriStateCheckbox from "primevue/tristatecheckbox";
 import App from "./App.vue";
 import TodasAsPessoas from "./pages/TodasAsPessoas.vue";
@@ -103,7 +104,7 @@ app.directive("tooltip", Tooltip);
 app.directive("ripple", Ripple);
 app.directive("badge", BadgeDirective);
 app.directive("styleclass", StyleClass);
-
+app.component("CascadeSelect",CascadeSelect)
 app.component("Accordion", Accordion);
 app.component("AccordionTab", AccordionTab);
 app.component("AutoComplete", AutoComplete);
