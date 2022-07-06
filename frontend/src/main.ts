@@ -89,11 +89,11 @@ import TreeSelect from "primevue/treeselect";
 import TreeTable from "primevue/treetable";
 import TriStateCheckbox from "primevue/tristatecheckbox";
 import App from "./App.vue";
-import TodasAsPessoas from "./Pages/TodasAsPessoas.vue";
-import CriarPessoa from "./Pages/CriarPessoa.vue";
-import VerPessoa from "./Pages/VerPessoa.vue";
-import VerCidades from "./Pages/VerCidades.vue";
-import CriarCidade from "./Pages/CriarCidade.vue";
+import TodasAsPessoas from "./pages/TodasAsPessoas.vue";
+import CriarPessoa from "./pages/CriarPessoa.vue";
+import VerPessoa from "./pages/VerPessoa.vue";
+import VerCidades from "./pages/VerCidades.vue";
+import CriarCidade from "./pages/CriarCidade.vue";
 const app = createApp(App);
 
 app.use(PrimeVue, { ripple: true, inputStyle: "outlined" });
