@@ -2,7 +2,7 @@ import "primevue/resources/primevue.min.css";
 import "primeflex/primeflex.css";
 import "primeicons/primeicons.css";
 import "primevue/resources/themes/mdc-dark-indigo/theme.css";
-
+import {createRouter,createWebHashHistory} from "vue-router";
 import { createApp } from "vue";
 import PrimeVue from "primevue/config";
 import AutoComplete from "primevue/autocomplete";
@@ -89,7 +89,11 @@ import TreeSelect from "primevue/treeselect";
 import TreeTable from "primevue/treetable";
 import TriStateCheckbox from "primevue/tristatecheckbox";
 import App from "./App.vue";
-
+import TodasAsPessoas from "./Pages/TodasAsPessoas.vue";
+import CriarPessoa from "./Pages/CriarPessoa.vue";
+import VerPessoa from "./Pages/VerPessoa.vue";
+import VerCidades from "./Pages/VerCidades.vue";
+import CriarCidade from "./Pages/CriarCidade.vue";
 const app = createApp(App);
 
 app.use(PrimeVue, { ripple: true, inputStyle: "outlined" });
@@ -177,5 +181,19 @@ app.component("Tree", Tree);
 app.component("TreeSelect", TreeSelect);
 app.component("TreeTable", TreeTable);
 app.component("TriStateCheckbox", TriStateCheckbox);
+const routes = [
+    { path: '/', component: TodasAsPessoas },
+    { path: '/VerPessoa/:id', component: VerPessoa },
+    { path: '/CriarPessoa', component: CriarPessoa },
+    { path:"/VerCidades", component: VerCidades },
+    { path:"/CriarCidade", component: CriarCidade }
+  ]
+  const router = createRouter({
+    history: createWebHashHistory(),
+    routes,
+  })
+app.use(router)
+
+
 
 app.mount("#app");

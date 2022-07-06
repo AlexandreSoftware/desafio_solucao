@@ -9,7 +9,7 @@
 <template>
   <SideBarComponent :isOpen="isOpen">
   </SideBarComponent>
-
+   <router-view></router-view>
 </template>
 <style>
 body{
