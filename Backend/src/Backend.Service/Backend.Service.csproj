@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>preview</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Backend.Infra.Data\Backend.Infra.Data.csproj" />
+		<ProjectReference Include="..\Backend.Repository\Backend.Repository.csproj" />
+	</ItemGroup>
+
+</Project>
