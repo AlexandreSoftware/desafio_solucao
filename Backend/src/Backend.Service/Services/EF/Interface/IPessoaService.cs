@@ -1,4 +1,5 @@
 ﻿using Backend.Infra.Data.model;
+using Backend.Service.model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Backend.Service.EF.Interface
 {
     public interface IPessoaService
     {
-        public List<Pessoa> GetAll(int page);
+        public IEnumerable<Pessoa> GetAll(int page);
         public Pessoa GetId(int id);
         public bool Post(Pessoa p);
         public int Put(Pessoa p);

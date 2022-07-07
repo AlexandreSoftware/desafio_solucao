@@ -8,11 +8,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Folder Include="Repository\Dapper\" />
+	  <PackageReference Include="Bogus" Version="34.0.2" />
+	  <PackageReference Include="Serilog" Version="2.11.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Backend.Infra.Data\Backend.Infra.Data.csproj"/>
+		<ProjectReference Include="..\Backend.Infra.Data\Backend.Infra.Data.csproj" />
 	</ItemGroup>
 
 </Project>

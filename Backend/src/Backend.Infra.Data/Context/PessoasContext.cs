@@ -15,7 +15,7 @@ namespace Backend.Infra.Data.Context
         {
 
         }
-        public virtual DbSet<Pessoa> Pessoas { get; set; }
-        public virtual DbSet<Cidade> Cidades { get; set; }
+        public virtual DbSet<PessoaDto> Pessoas { get; set; }
+        public virtual DbSet<CidadeDto> Cidades { get; set; }
     }
 }

@@ -9,10 +9,10 @@ namespace Backend.Repository.EF.Interface
 {
     public interface IPessoaRepository
     {
-        public List<Pessoa> GetAll(int Page);
-        public Pessoa GetId(int id);
-        public bool Post(Pessoa p);
-        public int Put(Pessoa p);
+        public List<PessoaDto> GetAll(int Page);
+        public PessoaDto GetId(int id);
+        public bool Post(PessoaDto p);
+        public int Put(PessoaDto p);
         public bool Delete(int id);
     }
 }

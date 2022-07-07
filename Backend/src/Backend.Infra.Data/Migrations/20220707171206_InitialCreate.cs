@@ -14,8 +14,8 @@ namespace Backend.Infra.Data.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UF = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    nome = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    uF = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,35 +28,24 @@ namespace Backend.Infra.Data.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    cpf = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    nome = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    cpf = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     idade = table.Column<int>(type: "int", nullable: false),
-                    cidadeid = table.Column<int>(type: "int", nullable: false)
+                    id_cidade = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pessoas", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_Pessoas_Cidades_cidadeid",
-                        column: x => x.cidadeid,
-                        principalTable: "Cidades",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Pessoas_cidadeid",
-                table: "Pessoas",
-                column: "cidadeid");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Pessoas");
+                name: "Cidades");
 
             migrationBuilder.DropTable(
-                name: "Cidades");
+                name: "Pessoas");
         }
     }
 }
