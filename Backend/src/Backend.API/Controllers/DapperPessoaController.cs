@@ -1,55 +1,52 @@
 ﻿using Backend.Infra.Data.Context;
 using Backend.Infra.Data.model;
-using Backend.Service.EF;
-using Backend.Service.EF.Interface;
+using Backend.Service.Redis.Interface;
 using Backend.Service.model;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
-namespace Backend.API.Controllers
+namespace Backend.Api.Controllers
 {
-    [Route("api/EF/[controller]")]
-    [ApiController]
-    public class EFPessoaController : ControllerBase
+    [Route("api/[controller]")]
+    [Microsoft.AspNetCore.Mvc.ApiController]
+    public class DapperPessoaController : ControllerBase
     {
-        public IPessoaService PS { get; set; }
-        public EFPessoaController(IPessoaService ps)
+        public IPessoaService CS { get; set; }
+        public DapperPessoaController(IPessoaService cs)
         {
-            PS = ps;
+            CS = cs;
         }
         [HttpGet("Pagina/{page}")]
         public ActionResult<IEnumerable<Pessoa>> GetAll(int page)
         {
-            string templateLog = "[Backend.Api] [EFPessoaController] [GetAll]";
+            string templateLog = "[Backend.Api] [DapperPessoaController] [GetAll]";
             try
             {
                 Log.Information($"{templateLog} Iniciando GetAll");
-                var res = PS.GetAll(page);
+                var res = CS.GetAll(page);
                 Log.Information($"{templateLog} GetAll Finalizado, retornando");
                 return Ok(res);
             }
             catch (Exception e)
             {
-                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message + " em :" + e.StackTrace);
+                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message + " em" + e.StackTrace); ;
                 return StatusCode(500);
-                
             }
         }
         [HttpGet("{id}")]
         public ActionResult<Pessoa> GetId(int id)
         {
-            string templateLog = "[Backend.Api] [EFPessoaController] [GetId]";
+            string templateLog = "[Backend.Api] [DapperPessoaController] [GetId]";
             try
             {
                 Log.Information($"{templateLog} Iniciando GetId");
-                var res = PS.GetId(id);
+                var res = CS.GetId(id);
                 Log.Information($"{templateLog} GetId Finalizado, retornando");
                 return Ok(res);
             }
             catch (Exception e)
             {
-
-                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message + " em :" + e.StackTrace);
+                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message + " em" + e.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -57,17 +54,17 @@ namespace Backend.API.Controllers
         [HttpPost]
         public ActionResult<bool> Post([FromBody] Pessoa p)
         {
-            string templateLog = "[Backend.Api] [EFPessoaController] [Post]";
+            string templateLog = "[Backend.Api] [DapperPessoaController] [Post]";
             try
             {
                 Log.Information($"{templateLog} Iniciando Post");
-                var res = PS.Post(p);
+                var res = CS.Post(p);
                 Log.Information($"{templateLog} Post Finalizado, retornando");
                 return Ok(res);
             }
             catch (Exception e)
             {
-                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message + " em :" + e.StackTrace);
+                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message + " em" + e.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -75,34 +72,34 @@ namespace Backend.API.Controllers
         [HttpPut]
         public ActionResult<int> Put([FromBody] Pessoa p)
         {
-            string templateLog = "[Backend.Api] [EFPessoaController] [Post]";
+            string templateLog = "[Backend.Api] [DapperPessoaController] [Put]";
             try
             {
                 Log.Information($"{templateLog} Iniciando Put");
-                var res = PS.Put(p);
+                var res = CS.Put(p);
                 Log.Information($"{templateLog} Put Finalizado, retornando");
                 return Ok(res);
             }
             catch (Exception e)
             {
-                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message + " em :" + e.StackTrace);
+                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message + " em" + e.StackTrace);
                 return StatusCode(500);
             }
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public ActionResult<bool> Delete(int id)
         {
-            string templateLog = "[Backend.Api] [EFPessoaController] [Delete]";
+            string templateLog = "[Backend.Api] [DapperPessoaController] [Delete]";
             try
             {
                 Log.Information($"{templateLog} Iniciando Delete");
-                var res =PS.Delete(id);
+                var res = CS.Delete(id);
                 Log.Information($"{templateLog} Delete Finalizado, retornando");
                 return Ok(res);
             }
             catch (Exception e)
             {
-                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message + " em :" + e.StackTrace);
+                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message + " em" + e.StackTrace);
                 return StatusCode(500);
             }
         }
