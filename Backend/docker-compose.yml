@@ -1,19 +1,6 @@
 version: '3.4'
 
 services:
-  backend.api:
-    image: ${DOCKER_REGISTRY-}backendapi
-    depends_on:
-    - sqldata
-    - elasticsearch
-    build:
-      context: .
-      dockerfile: src/Backend.API/Dockerfile
-    environment:
-      DBConnection: "Data Source=sqldata,1433;Initial Catalog=master;Persist Security Info=True;User ID=sa;Password=Stefanini@123"
-    ports:
-     - "6504:80"
-  
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.3.1
     environment:
@@ -36,14 +23,9 @@ services:
         - $HOST_PATH_TO_SEQ:/data
         - $HOST_HTTP_PORT:9240
         - $HOST_INGESTION_PORT:5341
+        - HOST_PATH_TO_SEQ:/data
+        - HOST_HTTP_PORT:9240
+        - HOST_INGESTION_PORT:5341
     ports:
       - "9540:5341"
       - "9240:9240"
-
-  sqldata:
-    image: mcr.microsoft.com/mssql/server:2017-latest
-    environment:
-      - SA_PASSWORD=Stefanini@123
-      - ACCEPT_EULA=Y
-    ports:
-      - "5434:1433"

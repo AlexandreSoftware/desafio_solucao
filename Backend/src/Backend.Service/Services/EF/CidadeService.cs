@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Backend.Infra.Data.model;
 using Backend.Repository.EF.Interface;
+using Backend.Repository.Redis;
 using Backend.Service.EF.Interface;
 using Backend.Service.model;
 using Serilog;
@@ -15,10 +16,12 @@ namespace Backend.Service.EF
     public class CidadeService : ICidadeService
     {
         public readonly ICidadeRepository _CR;
+        public readonly ICidadeRepositoryRedis _CRR;
         public readonly IMapper _mapper;
 
-        public CidadeService(ICidadeRepository cr, IMapper mapper)
+        public CidadeService(ICidadeRepository cr, IMapper mapper,ICidadeRepositoryRedis crr)
         {
+            _CRR = crr;
             _CR = cr;
             _mapper = mapper;
         }
@@ -53,7 +56,15 @@ namespace Backend.Service.EF
             if (id >= 0)
             {
                 Log.Information($"{templateLog} ID e um numero maior que 0, buscando registro pelo ID e retornando");
-                return _mapper.Map<CidadeDto, Cidade>(_CR.GetId(id));
+
+                CidadeDto? mappedElement = _CRR.GetId(id);
+                if(mappedElement is null)
+                {
+                    mappedElement = _CR.GetId(id);
+                    _CRR.Set(mappedElement);
+                }
+                return _mapper.Map<CidadeDto, Cidade>(mappedElement);
+
             }
             else
             {
@@ -68,7 +79,15 @@ namespace Backend.Service.EF
             if (c.Id >= 0 && c.UF.Length == 2 && c.Nome.Length >1)
             {
                 Log.Information($"{templateLog} Validacoes passaram, Mapeando para DTO e retornando");
-                return _CR.Post(_mapper.Map<Cidade,CidadeDto>(c));
+
+                var mappedCidade = _mapper.Map<Cidade, CidadeDto>(c);
+                var passed = _CR.Post(mappedCidade);
+                if(passed)
+                {
+                    _CRR.Set(mappedCidade);
+                }
+                return passed;
+
             }
             else
             {
@@ -84,9 +103,12 @@ namespace Backend.Service.EF
             if (c.UF.Length == 2 && c.Nome.Length > 1)
             {
                 Log.Information($"{templateLog} Validacoes passaram, Mapeando para DTO e retornando");
-                return _CR.Put(_mapper.Map<Cidade, CidadeDto>(c));
+                var mappedCidade = _mapper.Map<Cidade, CidadeDto>(c);
+                int idInserted = _CR.Put(mappedCidade);
+                mappedCidade.id = idInserted;
+                _CRR.Set(mappedCidade);
+                return idInserted;
             }
-
             else
             {
                 Log.Error($"{templateLog} Validacoes nao passaram, jogando erro");
@@ -100,7 +122,12 @@ namespace Backend.Service.EF
             if (id >= 0)
             {
                 Log.Information($"{templateLog} ID e um numero maior que 0, deletando registro pelo ID e retornando");
-                return _CR.Delete(id);
+                bool deleted =_CR.Delete(id);
+                if (deleted)
+                {
+                    _CRR.Delete(id);
+                }
+                return deleted;
             }
             else
             {
