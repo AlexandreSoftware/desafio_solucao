@@ -30,7 +30,7 @@ namespace Backend.API.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message);
+                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message + " em :" + e.StackTrace);
                 return StatusCode(500);
                 
             }
@@ -49,7 +49,7 @@ namespace Backend.API.Controllers
             catch (Exception e)
             {
 
-                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message);
+                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message + " em :" + e.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -67,7 +67,7 @@ namespace Backend.API.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message);
+                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message + " em :" + e.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -85,7 +85,7 @@ namespace Backend.API.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message);
+                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message + " em :" + e.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -102,7 +102,7 @@ namespace Backend.API.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message);
+                Log.Error(templateLog + " [ERROR] Excessao achada : " + e.Message + " em :" + e.StackTrace);
                 return StatusCode(500);
             }
         }
