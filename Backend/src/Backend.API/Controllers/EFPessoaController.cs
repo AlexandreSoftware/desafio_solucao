@@ -1,7 +1,6 @@
 ﻿using Backend.Infra.Data.Context;
 using Backend.Infra.Data.model;
 using Backend.Service.EF;
-using Backend.Service.EF.Interface;
 using Backend.Service.model;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -12,8 +11,8 @@ namespace Backend.API.Controllers
     [ApiController]
     public class EFPessoaController : ControllerBase
     {
-        public IPessoaService PS { get; set; }
-        public EFPessoaController(IPessoaService ps)
+        public IPessoaServiceEF PS { get; set; }
+        public EFPessoaController(IPessoaServiceEF ps)
         {
             PS = ps;
         }

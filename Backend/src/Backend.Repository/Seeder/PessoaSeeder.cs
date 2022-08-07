@@ -12,7 +12,8 @@ using Backend.Repository.EF;
 using Backend.Infra.Data.model;
 using Bogus.Extensions.Brazil;
 using Backend.Infra.Data.Context;
-
+//eu sei que o resultado nao e nulo quando eu chamo ele, remover isso so piora performace por nada
+#pragma warning disable CS8629 // Possible null reference assignment.
 namespace Backend.Repository.Context
 {
     public class PessoaSeeder
@@ -26,8 +27,8 @@ namespace Backend.Repository.Context
             PessoasContext PC = pc;
             string templatelog = "[Backend.Repository] [Seeder] [Seed]";
             Log.Information($"{templatelog} Iniciando Seeding, instanciando o Repositorio");
-            PessoaRepository PR = new PessoaRepository(PC);
-            CidadeRepository CR = new CidadeRepository(PC);
+            PessoaRepositoryEF PR = new(PC);
+            CidadeRepositoryEF CR = new(PC);
             Log.Information($"{templatelog} Gerando Pessoas");
             var pessoas = GerarPessoas();
             Log.Information($"{templatelog} Gerando Cidades");
@@ -37,11 +38,11 @@ namespace Backend.Repository.Context
             Log.Information($"{templatelog} Inserindo Cidades e Pessoas");
             for (int i = 0; i < pessoas.Length; i++)
             {
-                CR.Put(cidades[i]);
+                cidades[i].id = CR.Put(cidades[i]);
             }
             for (int i = 0; i < 40; i++)
             {
-                pessoas[i].id_cidade = RandomCidadeIds[i];
+                pessoas[i].id_cidade = (int)cidades[RandomCidadeIds[i]].id;
             }
             //isso garante que sempre vai ter uma cidade para uma pessoa
             for (int i = 0; i < pessoas.Length; i++)

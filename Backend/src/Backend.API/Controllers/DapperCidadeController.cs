@@ -1,6 +1,7 @@
 ﻿using Backend.Infra.Data.Context;
 using Backend.Infra.Data.model;
-using Backend.Service.Redis.Interface;
+using Backend.Service.Dapper;
+using Backend.Service.EF;
 using Backend.Service.model;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -12,8 +13,8 @@ namespace Backend.Api.Controllers
     public class DapperCidadeController :ControllerBase
     {
 
-            public ICidadeService CS { get; set; }
-            public DapperCidadeController(ICidadeService cs)
+            public ICidadeServiceEF CS { get; set; }
+            public DapperCidadeController(ICidadeServiceEF cs)
             {
                 CS = cs;
             }
@@ -106,6 +107,3 @@ namespace Backend.Api.Controllers
             }
         }
     }
-
-}
-}

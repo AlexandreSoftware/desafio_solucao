@@ -1,5 +1,5 @@
 ﻿using Backend.Infra.Data.model;
-using Backend.Service.EF.Interface;
+using Backend.Service.EF;
 using Backend.Service.model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +11,8 @@ namespace Backend.Api.Controllers
     [ApiController]
     public class EFCidadeController : ControllerBase
     {
-        public ICidadeService CS { get; set; }
-        public EFCidadeController(ICidadeService cs)
+        public ICidadeServiceEF CS { get; set; }
+        public EFCidadeController(ICidadeServiceEF cs)
         {
             CS = cs;
         }

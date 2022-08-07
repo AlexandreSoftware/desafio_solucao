@@ -6,7 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+//eu sei que o resultado nao e nulo quando eu chamo ele, remover isso so piora performace por nada
+#pragma warning disable CS8601 // Possible null reference assignment.
 namespace Backend.Repository.Redis
 {
     public interface ICidadeRepositoryRedis
@@ -32,8 +33,9 @@ namespace Backend.Repository.Redis
                 var result = client.HashGetAll(id + "cliente");
                 if (result is not null)
                 {
-                    if (result.Length>0 && result[0].Name == "nome")
+                    if (result.Length>0 && result[0].Name == "nome" )
                     {
+
                         return new CidadeDto { id = id, nome = result[0].Value, uF = result[1].Value };
                     }
                     return new CidadeDto { id = id, nome = result[1].Value, uF = result[0].Value };
@@ -65,7 +67,7 @@ namespace Backend.Repository.Redis
     }
     internal class HashResult 
     {
-        public string? nome { get; set; }
-        public string? uF { get; set; }
+        public string? Nome { get; set; }
+        public string? UF { get; set; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Backend.Infra.Data.Context;
 using Backend.Infra.Data.model;
-using Backend.Repository.EF.Interface;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -10,10 +9,18 @@ using System.Threading.Tasks;
 
 namespace Backend.Repository.EF
 {
-    public class PessoaRepository : IPessoaRepository
+    public interface IPessoaRepositoryEF
+    {
+        public List<PessoaDto> GetAll(int Page);
+        public PessoaDto GetId(int id);
+        public bool Post(PessoaDto p);
+        public int Put(PessoaDto p);
+        public bool Delete(int id);
+    }
+    public class PessoaRepositoryEF : IPessoaRepositoryEF
     {
         private readonly PessoasContext PessoasContext;
-        public PessoaRepository(PessoasContext pessoasContext)
+        public PessoaRepositoryEF(PessoasContext pessoasContext)
         {
             this.PessoasContext = pessoasContext;
         }
@@ -79,12 +86,16 @@ namespace Backend.Repository.EF
                 var pessoaAdicionada = PessoasContext.Pessoas.Add(p);
                 PessoasContext.SaveChanges();
                 Log.Information($"{templateLog} Pessoa inserida, retornando o id");
-                return (int)p.id;
+                if(p.id is not null)
+                {
+                    return (int)p.id;
+                }
+                throw new Exception("somehow p.id is null");
             }
             else
             {
                 Log.Information($"{templateLog} Cidade não existe, jogando erro");
-                throw new IOException("Ja exite uma Pessoa");
+                throw new IOException("Cidade nao existe");
             }
 
         }

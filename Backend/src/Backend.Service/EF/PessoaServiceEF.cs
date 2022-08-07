@@ -6,19 +6,25 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Backend.Infra.Data.model;
 using Backend.Repository.EF;
-using Backend.Repository.EF.Interface;
-using Backend.Service.EF.Interface;
 using Backend.Service.model;
 using Serilog;
 
 namespace Backend.Service.EF
 {
-    public class PessoaService : IPessoaService
+    public interface IPessoaServiceEF
     {
-        public readonly IPessoaRepository _PR;
-        public readonly ICidadeRepository _CR;
+        public IEnumerable<Pessoa> GetAll(int page);
+        public Pessoa GetId(int id);
+        public bool Post(Pessoa p);
+        public int Put(Pessoa p);
+        public bool Delete(int id);
+    }
+    public class PessoaServiceEF : IPessoaServiceEF
+    {
+        public readonly IPessoaRepositoryEF _PR;
+        public readonly ICidadeRepositoryEF _CR;
         public readonly IMapper _mapper;
-        public PessoaService(IPessoaRepository pr,ICidadeRepository cr, IMapper mapper)
+        public PessoaServiceEF(IPessoaRepositoryEF pr,ICidadeRepositoryEF cr, IMapper mapper)
         {
             _CR = cr;
             _mapper = mapper;
@@ -26,7 +32,7 @@ namespace Backend.Service.EF
         }
         public IEnumerable<Pessoa> GetAll(int page)
         {
-            string templateLog = "[Backend.Service] [EFPessoaService] [GetAll]";
+            string templateLog = "[Backend.Service] [EFPessoaServiceEF] [GetAll]";
             Log.Information($"{templateLog} Iniciando Servico GetAll, checando se a pagina e um numero maior que 0");
             if (page >= 0)
             {
@@ -50,7 +56,7 @@ namespace Backend.Service.EF
         }
         public Pessoa GetId(int id)
         {
-            string templateLog = "[Backend.Service] [EFPessoaService] [GetId]";
+            string templateLog = "[Backend.Service] [EFPessoaServiceEF] [GetId]";
             Log.Information($"{templateLog} Iniciando Servico GetId, checando se o ID e um numero maior que 0");
             if (id >= 0)
             {
@@ -71,7 +77,7 @@ namespace Backend.Service.EF
         }
         public bool Post(Pessoa p)
         {
-            string templateLog = "[Backend.Service] [EFPessoaService] [Post]";
+            string templateLog = "[Backend.Service] [EFPessoaServiceEF] [Post]";
             Log.Information($"{templateLog} Iniciando Servico Post, checando se o ID e um numero maior que 0, se a idade e menor que 150, se o nome tem menos que 350 caracteres, e o cpf tem o tamanho correto");
             if (p.Id >= 0 && p.Idade < 150 && p.Nome.Length < 300 && p.Cpf.Length == 11)
             {
@@ -90,7 +96,7 @@ namespace Backend.Service.EF
         }
         public int Put(Pessoa p)
         {
-            string templateLog = "[Backend.Service] [EFPessoaService] [Put]";
+            string templateLog = "[Backend.Service] [EFPessoaServiceEF] [Put]";
             Log.Information($"{templateLog} Iniciando Servico Put, checando se a idade e menor que 150, se o nome tem menos que 350 caracteres, e o cpf tem o tamanho correto");
             p.Id = null;
             if (p.Idade < 150 && p.Nome.Length < 300 && p.Cpf.Length == 11)
@@ -110,7 +116,7 @@ namespace Backend.Service.EF
         }
         public bool Delete(int id)
         {
-            string templateLog = "[Backend.Service] [EFPessoaService] [Delete]";
+            string templateLog = "[Backend.Service] [EFPessoaServiceEF] [Delete]";
             Log.Information($"{templateLog} Iniciando Servico Delete, checando se o ID e um numero maior que 0");
             if (id >= 0)
             {

@@ -1,9 +1,9 @@
 ﻿using Backend.Infra.Data.Context;
 using Backend.Infra.Data.model;
-using Backend.Service.Redis.Interface;
 using Backend.Service.model;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using Backend.Service.Dapper;
 
 namespace Backend.Api.Controllers
 {
@@ -11,10 +11,10 @@ namespace Backend.Api.Controllers
     [Microsoft.AspNetCore.Mvc.ApiController]
     public class DapperPessoaController : ControllerBase
     {
-        public IPessoaService CS { get; set; }
-        public DapperPessoaController(IPessoaService cs)
+        public IPessoaServiceDapper PS { get; set; }
+        public DapperPessoaController(IPessoaServiceDapper _ps)
         {
-            CS = cs;
+            PS = _ps;
         }
         [HttpGet("Pagina/{page}")]
         public ActionResult<IEnumerable<Pessoa>> GetAll(int page)
@@ -23,7 +23,7 @@ namespace Backend.Api.Controllers
             try
             {
                 Log.Information($"{templateLog} Iniciando GetAll");
-                var res = CS.GetAll(page);
+                var res = PS.GetAll(page);
                 Log.Information($"{templateLog} GetAll Finalizado, retornando");
                 return Ok(res);
             }
@@ -40,7 +40,7 @@ namespace Backend.Api.Controllers
             try
             {
                 Log.Information($"{templateLog} Iniciando GetId");
-                var res = CS.GetId(id);
+                var res = PS.GetId(id);
                 Log.Information($"{templateLog} GetId Finalizado, retornando");
                 return Ok(res);
             }
@@ -58,7 +58,7 @@ namespace Backend.Api.Controllers
             try
             {
                 Log.Information($"{templateLog} Iniciando Post");
-                var res = CS.Post(p);
+                var res = PS.Post(p);
                 Log.Information($"{templateLog} Post Finalizado, retornando");
                 return Ok(res);
             }
@@ -76,7 +76,7 @@ namespace Backend.Api.Controllers
             try
             {
                 Log.Information($"{templateLog} Iniciando Put");
-                var res = CS.Put(p);
+                var res = PS.Put(p);
                 Log.Information($"{templateLog} Put Finalizado, retornando");
                 return Ok(res);
             }
@@ -93,7 +93,7 @@ namespace Backend.Api.Controllers
             try
             {
                 Log.Information($"{templateLog} Iniciando Delete");
-                var res = CS.Delete(id);
+                var res = PS.Delete(id);
                 Log.Information($"{templateLog} Delete Finalizado, retornando");
                 return Ok(res);
             }

@@ -1,6 +1,12 @@
 using Backend.Infra.Data.Context;
 using Backend.Repository;
 using Backend.Repository.Context;
+using Backend.Repository.Dapper;
+using Backend.Repository.EF;
+using Backend.Repository.Redis;
+using Backend.Service.Dapper;
+using Backend.Service.EF;
+using Backend.Service.model;
 using Backend.Service.Profile;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -27,18 +33,24 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(typeof(PessoaProfile), typeof(CidadeProfile));
 //dbconnection
 builder.Services.AddDbContext<PessoasContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddTransient<IDapperWrapper, DapperWrapper>(x => new DapperWrapper(builder.Configuration.GetValue<string>("DefaultConnection")));
+
 //redis
-var redisConnection = builder.Configuration.GetConnectionString("RedisConnection");
+var redisConnection = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("RedisConnection"));
 builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(
     redisConnection
     ));
 //Pessoa 
-builder.Services.AddScoped<Backend.Repository.EF.Interface.IPessoaRepository, Backend.Repository.EF.PessoaRepository>();
-builder.Services.AddScoped<Backend.Service.EF.Interface.IPessoaService, Backend.Service.EF.PessoaService>();
+builder.Services.AddScoped<IPessoaRepositoryEF, PessoaRepositoryEF>();
+builder.Services.AddScoped<IPessoaServiceEF, PessoaServiceEF>();
+builder.Services.AddScoped<IPessoaRepositoryDapper, PessoaRepositoryDapper>();
+builder.Services.AddScoped<IPessoaServiceDapper, PessoaServiceDapper>();
 //Cidade
-builder.Services.AddScoped<Backend.Repository.EF.Interface.ICidadeRepository, Backend.Repository.EF.CidadeRepository>();
-builder.Services.AddScoped<Backend.Repository.Redis.ICidadeRepositoryRedis, Backend.Repository.Redis.CidadeRepositoryRedis>();
-builder.Services.AddScoped<Backend.Service.EF.Interface.ICidadeService, Backend.Service.EF.CidadeService>();
+builder.Services.AddScoped<ICidadeRepositoryEF, CidadeRepositoryEF>();
+builder.Services.AddScoped<ICidadeServiceEF, CidadeServiceEF>();
+builder.Services.AddScoped<ICidadeRepositoryDapper, CidadeRepositoryDapper>();
+builder.Services.AddScoped<ICidadeServiceDapper, CidadeServiceDapper>();
+builder.Services.AddScoped<ICidadeRepositoryRedis, CidadeRepositoryRedis>();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 //UseSwagger
@@ -48,7 +60,11 @@ app.UseSwaggerUI();
 using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<PessoasContext>();
-    dataContext.Database.Migrate();
+    //restaurando o banco de dados pra um estado inicial
+    dataContext.Database.ExecuteSqlRaw("DELETE FROM [dbo].Cidades;DBCC CHECKIDENT ('[dbo].Cidades', RESEED, 1);");
+
+    dataContext.Database.ExecuteSqlRaw("DELETE FROM [dbo].Pessoas;DBCC CHECKIDENT ('[dbo].Pessoas', RESEED, 1);");
+    dataContext.Database.Migrate();   
     PessoaSeeder.Seed(dataContext);
 }
 
